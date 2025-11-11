@@ -1,0 +1,164 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: CHECKOUT
+        uses: actions/checkout@v4
+
+      - name: SETUP NODE
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            apps/web/package-lock.json
+            apps/api/package-lock.json
+
+      - name: INSTALAR DEPENDENCIAS WEB
+        working-directory: apps/web
+        run: npm ci
+
+      - name: INSTALAR DEPENDENCIAS API
+        working-directory: apps/api
+        run: npm ci
+
+      - name: TESTES UNITARIOS API
+        working-directory: apps/api
+        run: npm test
+
+      - name: BUILD WEB
+        working-directory: apps/web
+        run: npm run build
+
+      - name: SETUP DOCKER BUILDX
+        uses: docker/setup-buildx-action@v3
+
+      - name: BUILD DOCKER IMAGES
+        run: docker-compose build
+
+      - name: START SERVICES
+        run: |
+          docker-compose up -d
+          sleep 10
+
+      - name: HEALTH CHECK
+        run: |
+          curl -f http://localhost:3000/api/health || exit 1
+          curl -f http://localhost:8080 || exit 1
+
+      - name: INSTALAR PLAYWRIGHT
+        run: |
+          npm install -D @playwright/test
+          npx playwright install --with-deps
+
+      - name: TESTES E2E
+        run: npx playwright test
+        env:
+          E2E_BASE_URL: http://localhost:8080
+
+      - name: UPLOAD RELATORIO PLAYWRIGHT
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: UPLOAD RESULTADOS TESTES
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 7
+
+      - name: LOGS DOCKER
+        if: failure()
+        run: docker-compose logs
+
+      - name: STOP SERVICES
+        if: always()
+        run: docker-compose down
+
+      - name: UPLOAD BUILD ARTIFACTS
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: apps/web/dist
+          retention-days: 7
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: CHECKOUT
+        uses: actions/checkout@v4
+
+      - name: DOWNLOAD BUILD
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: apps/web/dist
+
+      - name: SETUP NODE
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: START SERVICES
+        run: docker-compose up -d
+
+      - name: WAIT FOR SERVICES
+        run: sleep 15
+
+      - name: RUN LIGHTHOUSE CI
+        run: |
+          npm install -g @lhci/cli
+          lhci autorun --config=lighthouserc.json || true
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: UPLOAD LIGHTHOUSE REPORT
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .lighthouseci
+          retention-days: 7
+
+      - name: STOP SERVICES
+        if: always()
+        run: docker-compose down
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build-and-test, lighthouse]
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: CHECKOUT
+        uses: actions/checkout@v4
+
+      - name: DOWNLOAD BUILD
+        uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: dist
+
+      - name: DEPLOY TO GITHUB PAGES
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          cname: productivity-pwa.yourdomain.com

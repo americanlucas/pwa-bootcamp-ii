@@ -1,0 +1,25 @@
+{
+  "name": "productivity-web",
+  "version": "1.0.0",
+  "description": "PWA FRONTEND PARA PRODUCTIVITY HELPER",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [
+    "pwa",
+    "productivity",
+    "frontend"
+  ],
+  "author": "Lucas Americano",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "vite": "^5.0.8"
+  }
+}

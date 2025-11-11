@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # BACKEND API
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: productivity-api
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - CORS_ORIGIN=http://localhost:8080
+    volumes:
+      - ./apps/api/src:/app/src
+      - api-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - productivity-network
+
+  # PWA FRONTEND
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:3000
+    container_name: productivity-web
+    ports:
+      - "8080:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - productivity-network
+
+volumes:
+  api-data:
+    driver: local
+
+networks:
+  productivity-network:
+    driver: bridge

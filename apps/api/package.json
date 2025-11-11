@@ -1,0 +1,30 @@
+{
+  "name": "productivity-api",
+  "version": "1.0.0",
+  "description": "API BACKEND PARA PRODUCTIVITY HELPER PWA",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "npm test -- --watch",
+    "test:coverage": "npm test -- --coverage"
+  },
+  "keywords": [
+    "productivity",
+    "api",
+    "rest"
+  ],
+  "author": "Lucas Americano",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  }
+}
