@@ -1,7 +1,7 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { validateTask } from '../middleware/validation.js';
-import { getAllTasks, getTaskById, createTask, updateTask, deleteTask } from '../../db/storage.js';
+import { getAllTasks, getTaskById, createTask, updateTask, deleteTask } from '../db/storage.js';
 
 const router = express.Router();
 

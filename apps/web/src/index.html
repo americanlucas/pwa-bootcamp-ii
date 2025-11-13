@@ -1,107 +1,114 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Aplicativo de produtividade para gerenciar links, notas e tarefas">
-  <meta name="theme-color" content="#3b82f6">
-  
-  <title>Productivity Helper PWA</title>
-  
-  <!-- PWA MANIFEST -->
-  <link rel="manifest" href="/manifest.json">
-  
-  <!-- ICONS -->
-  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
-  <link rel="apple-touch-icon" href="/icons/icon-192.png">
-  
-  <!-- STYLES -->
-  <link rel="stylesheet" href="/apps/web/src/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aplicativo de produtividade para gerenciar links, notas e tarefas">
+    <meta name="theme-color" content="#3b82f6">
+
+    <title>PWA</title>
+
+    <!-- PWA MANIFEST -->
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <!-- ICONS -->
+    <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../icons/icon-192.png">
+
+    <!-- STYLES -->
+    <link rel="stylesheet" href="./styles.css">
+
+
 </head>
 <body>
-  <div id="app">
+<div id="app">
     <!-- HEADER -->
     <header class="app-header">
-      <h1>PRODUCTIVITY HELPER</h1>
-      <div class="header-actions">
-        <button id="installBtn" class="btn-install" style="display: none;">
-          INSTALAR APP
-        </button>
-        <div id="onlineStatus" class="status-indicator online">ONLINE</div>
-      </div>
+        <h1>PRODUCTIVITY HELPER</h1>
+        <div class="header-actions">
+            <button id="installBtn" class="btn-install" style="display: none;">
+                INSTALAR APP
+            </button>
+            <div id="onlineStatus" class="status-indicator online">ONLINE</div>
+        </div>
     </header>
 
     <!-- TABS -->
     <nav class="tabs">
-      <button class="tab active" data-tab="links">LINKS</button>
-      <button class="tab" data-tab="notes">NOTAS</button>
-      <button class="tab" data-tab="tasks">TAREFAS</button>
-      <button class="tab" data-tab="stats">ESTATISTICAS</button>
+        <button class="tab active" data-tab="links">LINKS</button>
+        <button class="tab" data-tab="notes">NOTAS</button>
+        <button class="tab" data-tab="tasks">TAREFAS</button>
+        <button class="tab" data-tab="stats">ESTATISTICAS</button>
     </nav>
 
     <!-- LOADING -->
     <div id="loading" class="loading" style="display: none;">
-      <div class="spinner"></div>
-      CARREGANDO...
+        <div class="spinner"></div>
+        CARREGANDO...
     </div>
 
     <!-- LINKS TAB -->
     <section id="links" class="tab-content active">
-      <div class="form-container">
-        <input type="text" id="linkTitle" placeholder="TITULO" data-testid="link-title">
-        <input type="url" id="linkUrl" placeholder="URL" data-testid="link-url">
-        <button id="addLink" class="btn-primary" data-testid="add-link">ADICIONAR LINK</button>
-      </div>
-      <div id="linksList" class="items-list"></div>
+        <div class="form-container">
+            <label for="linkTitle">Título do Link</label>
+            <input type="text" id="linkTitle" placeholder="TITULO" data-testid="link-title">
+            <label for="linkUrl">Título do Link</label>
+            <input type="url" id="linkUrl" placeholder="URL" data-testid="link-url">
+            <button id="addLink" class="btn-primary" data-testid="add-link">ADICIONAR LINK</button>
+        </div>
+        <div id="linksList" class="items-list"></div>
     </section>
 
     <!-- NOTES TAB -->
     <section id="notes" class="tab-content">
-      <div class="form-container">
-        <input type="text" id="noteTitle" placeholder="TITULO" data-testid="note-title">
-        <textarea id="noteContent" placeholder="CONTEUDO" rows="4" data-testid="note-content"></textarea>
-        <button id="addNote" class="btn-primary" data-testid="add-note">ADICIONAR NOTA</button>
-      </div>
-      <div id="notesList" class="items-list"></div>
+        <div class="form-container">
+            <label for="noteTitle">Título da Nota</label>
+            <input type="text" id="noteTitle" placeholder="TITULO" data-testid="note-title">
+            <label for="noteContent">Título da Nota</label>
+            <textarea id="noteContent" placeholder="CONTEUDO" rows="4" data-testid="note-content"></textarea>
+            <button id="addNote" class="btn-primary" data-testid="add-note">ADICIONAR NOTA</button>
+        </div>
+        <div id="notesList" class="items-list"></div>
     </section>
 
     <!-- TASKS TAB -->
     <section id="tasks" class="tab-content">
-      <div class="form-container">
-        <input type="text" id="taskDescription" placeholder="DESCRICAO DA TAREFA" data-testid="task-description">
-        <button id="addTask" class="btn-primary" data-testid="add-task">ADICIONAR TAREFA</button>
-      </div>
-      <div id="tasksList" class="items-list"></div>
+        <div class="form-container">
+            <label for="taskDescription">Descrição da tarefa</label>
+            <input type="text" id="taskDescription" placeholder="DESCRICAO DA TAREFA" data-testid="task-description">
+            <button id="addTask" class="btn-primary" data-testid="add-task">ADICIONAR TAREFA</button>
+        </div>
+        <div id="tasksList" class="items-list"></div>
     </section>
 
     <!-- STATS TAB -->
     <section id="stats" class="tab-content">
-      <div id="statsContainer" class="stats-container">
-        <div class="stat-card">
-          <div class="stat-value" id="statLinks">0</div>
-          <div class="stat-label">LINKS SALVOS</div>
+        <div id="statsContainer" class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value" id="statLinks">0</div>
+                <div class="stat-label">LINKS SALVOS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statNotes">0</div>
+                <div class="stat-label">NOTAS CRIADAS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statTasks">0</div>
+                <div class="stat-label">TOTAL TAREFAS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statCompleted">0</div>
+                <div class="stat-label">CONCLUIDAS</div>
+            </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statNotes">0</div>
-          <div class="stat-label">NOTAS CRIADAS</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statTasks">0</div>
-          <div class="stat-label">TOTAL TAREFAS</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statCompleted">0</div>
-          <div class="stat-label">CONCLUIDAS</div>
-        </div>
-      </div>
     </section>
 
     <!-- TOAST NOTIFICATIONS -->
     <div id="toast" class="toast"></div>
-  </div>
+</div>
 
-  <!-- SCRIPTS -->
-  <script type="module" src="/api.js"></script>
-  <script type="module" src="/app.js"></script>
+<!-- SCRIPTS -->
+<script type="module" src="./api.js"></script>
+<script type="module" src="./app.js"></script>
 </body>
 </html>

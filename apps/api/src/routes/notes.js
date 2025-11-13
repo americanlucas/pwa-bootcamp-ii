@@ -1,7 +1,7 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { validateNote } from '../middleware/validation.js';
-import { getAllNotes, getNoteById, createNote, updateNote, deleteNote } from '../../db/storage.js';
+import { getAllNotes, getNoteById, createNote, updateNote, deleteNote } from '../db/storage.js';
 
 const router = express.Router();
 
