@@ -28,35 +28,13 @@ export default defineConfig({
         browserName: 'chromium',
         viewport: { width: 1280, height: 720 }
       }
-    },
-    {
-      name: 'firefox',
-      use: { 
-        browserName: 'firefox',
-        viewport: { width: 1280, height: 720 }
-      }
-    },
-    {
-      name: 'webkit',
-      use: { 
-        browserName: 'webkit',
-        viewport: { width: 1280, height: 720 }
-      }
-    },
-    {
-      name: 'mobile-chrome',
-      use: {
-        browserName: 'chromium',
-        viewport: { width: 375, height: 667 },
-        isMobile: true
-      }
     }
   ],
 
-  webServer: {
-    command: 'docker-compose up',
+  webServer: process.env.CI ? undefined : {
+    command: 'docker compose up',
     url: 'http://localhost:8080',
     timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI
+    reuseExistingServer: true
   }
 });

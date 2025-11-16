@@ -10,7 +10,7 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3000
-      - CORS_ORIGIN=http://localhost:8080
+      - CORS_ORIGIN=*
     volumes:
       - ./apps/api/src:/app/src
       - api-data:/app/data
