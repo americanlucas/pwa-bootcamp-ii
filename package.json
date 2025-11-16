@@ -30,7 +30,7 @@
   "author": "Lucas Americano",
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
-    "@lhci/cli": "^0.13.0"
+    "@lhci/cli": "^0.13.0",
+    "@playwright/test": "^1.56.1"
   }
 }

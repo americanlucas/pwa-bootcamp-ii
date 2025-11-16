@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 
 // HEALTH CHECK
 app.get('/api/health', (req, res) => {
-  res.status(200).json({
+  res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
