@@ -1,7 +1,7 @@
 import {defineConfig} from 'vite';
 
 export default defineConfig({
-    base: '/pwa-bootcamp-ii/', // NOME DO SEU REPOSITÓRIO
+    base: '/pwa-bootcamp-ii/',
     root: 'src',
     publicDir: '../public',
     resolve: {
