@@ -1,4 +1,4 @@
-# PRODUCTIVITY HELPER PWA
+# PWA PRODUCTIVITY HELPER 
 
 PWA COMPLETO PARA GERENCIAMENTO DE PRODUTIVIDADE COM BACKEND, CONTEINERIZACAO E CI/CD
 
@@ -79,8 +79,8 @@ productivity-pwa/
 
 ```bash
 # CLONAR REPOSITORIO
-git clone https://github.com/americanlucas/productivity-pwa.git
-cd productivity-pwa
+git clone https://github.com/americanlucas/pwa-bootcamp-ii.git
+cd pwa-bootcamp-ii
 
 # INICIAR SERVICOS
 docker-compose up -d
@@ -89,8 +89,8 @@ docker-compose up -d
 docker-compose ps
 
 # ACESSAR APLICACAO
-# PWA: http://localhost:8080
-# API: http://localhost:3000
+PWA: http://localhost:8080
+API: http://localhost:3000
 ```
 
 ### INSTALACAO LOCAL (DESENVOLVIMENTO)
@@ -154,20 +154,6 @@ npm test
 npm run test:coverage
 ```
 
-**EXEMPLO DE TESTE UNITARIO**
-```javascript
-// apps/api/tests/api.test.js
-describe('API Endpoints', () => {
-  test('POST /api/links cria novo link', async () => {
-    const res = await request(app)
-      .post('/api/links')
-      .send({ title: 'Test', url: 'https://test.com' });
-    expect(res.status).toBe(201);
-    expect(res.body).toHaveProperty('id');
-  });
-});
-```
-
 ### TESTES E2E (PLAYWRIGHT)
 
 ```bash
@@ -182,19 +168,6 @@ npx playwright test --ui
 
 # GERAR RELATORIO
 npx playwright show-report
-```
-
-**EXEMPLO DE TESTE E2E**
-```javascript
-// tests/e2e/pwa.spec.js
-test('PWA carrega e adiciona link', async ({ page }) => {
-  await page.goto('http://localhost:8080');
-  await page.click('text=Links');
-  await page.fill('[data-testid="link-title"]', 'GitHub');
-  await page.fill('[data-testid="link-url"]', 'https://github.com');
-  await page.click('[data-testid="add-link"]');
-  await expect(page.locator('text=GitHub')).toBeVisible();
-});
 ```
 
 ### LIGHTHOUSE (METRICAS PWA)
@@ -431,8 +404,7 @@ cd apps/api && npm start      # START BACKEND
 ## CONTATO E SUPORTE
 
 **DESENVOLVEDOR**: LUCAS AMERICANO  
-**BOOTCAMP**: BOOTCAMP II  
-**REPOSITORIO ORIGINAL**: https://github.com/americanlucas/bootcamp2-chrome-ext-lucas-americano-
+**BOOTCAMP**: BOOTCAMP II
 
 **ISSUES**: REPORTAR BUGS E SUGESTOES NO GITHUB  
 **LICENCA**: MIT
