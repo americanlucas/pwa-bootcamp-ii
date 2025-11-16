@@ -16,35 +16,10 @@ services:
       - api-data:/app/data
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10           # Aumentado de 3 para 10
+      start_period: 90s     # Aumentado de 60s para 90s
     networks:
       - productivity-network
-
-  # PWA FRONTEND
-  web:
-    build:
-      context: ./apps/web
-      dockerfile: Dockerfile
-      args:
-        - VITE_API_URL=http://localhost:3000
-    container_name: productivity-web
-    ports:
-      - "8080:80"
-    depends_on:
-      api:
-        condition: service_healthy
-    restart: unless-stopped
-    networks:
-      - productivity-network
-
-volumes:
-  api-data:
-    driver: local
-
-networks:
-  productivity-network:
-    driver: bridge
