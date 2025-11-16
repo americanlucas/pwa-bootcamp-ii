@@ -1,6 +1,7 @@
 import {defineConfig} from 'vite';
 
 export default defineConfig({
+    base: '/pwa-bootcamp-ii/', // NOME DO SEU REPOSITÓRIO
     root: 'src',
     publicDir: '../public',
     resolve: {
@@ -19,10 +20,10 @@ export default defineConfig({
     },
     server: {
         port: 8080,
-        host: '0.0.0.0', // Permite conexões externas ao container
+        host: '0.0.0.0',
         strictPort: true,
         watch: {
-            usePolling: true // Importante para Docker no Windows
+            usePolling: true
         }
     }
 });
